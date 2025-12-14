@@ -1,137 +1,504 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>RoZam Studio</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="RoZam Studio is an independent music studio and digital catalog showcasing original releases.">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>RoZam Studio — Official Catalog</title>
+  <meta name="description" content="RoZam Studio is an independent music studio and digital catalog. Stream previews, download releases, and request licensing." />
 
   <style>
+    :root{
+      --bg:#070812;
+      --panel:#0e1020;
+      --panel2:#0b0c18;
+      --text:#eaf0ff;
+      --muted:#a9b2cf;
+      --line:rgba(255,255,255,.08);
+      --neonA:#7aa2ff;     /* azul neon */
+      --neonB:#9dffcc;     /* menta neon */
+      --neonC:#ff4fd8;     /* magenta neon */
+      --shadow: 0 14px 50px rgba(0,0,0,.55);
+      --radius:18px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: radial-gradient(circle at top, #14182b, #0b0d12 60%);
-      color:#ffffff;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(122,162,255,.22), transparent 60%),
+        radial-gradient(700px 450px at 85% 15%, rgba(157,255,204,.18), transparent 55%),
+        radial-gradient(600px 500px at 55% 95%, rgba(255,79,216,.12), transparent 60%),
+        var(--bg);
       display:flex;
       align-items:center;
       justify-content:center;
-      height:100vh;
-      text-align:center;
+      padding:22px;
     }
 
-    .box{
-      max-width:760px;
-      padding:50px 40px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 18px;
-      box-shadow: 0 0 40px rgba(0,0,0,0.6);
+    .wrap{ width:min(980px, 100%); }
+
+    .topbar{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px 16px;
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.03);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
     }
 
-    h1{
-      font-size:3rem;
-      margin-bottom:12px;
-      letter-spacing:1px;
+    .brand{
+      display:flex; gap:12px; align-items:center;
+      min-width: 260px;
+    }
+    .logo{
+      width:44px; height:44px; border-radius:16px;
+      display:grid; place-items:center;
+      font-weight:900; letter-spacing:.5px;
+      background: linear-gradient(135deg, rgba(122,162,255,.25), rgba(157,255,204,.18));
+      border:1px solid var(--line);
+      box-shadow: 0 0 24px rgba(122,162,255,.18);
+    }
+    .brand h1{ margin:0; font-size:1.12rem; }
+    .brand .tag{ font-size:.92rem; color:var(--muted); }
+
+    .pill{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .badge{
+      font-size:.82rem;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color:var(--muted);
     }
 
-    p{
-      font-size:1.15rem;
-      opacity:.85;
-      margin-bottom:18px;
+    .grid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:14px;
+      margin-top:14px;
+    }
+
+    .card{
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .hero{
+      padding:18px 18px 16px;
+    }
+    .hero h2{
+      margin:0 0 8px;
+      font-size:1.7rem;
+      letter-spacing:.2px;
+    }
+    .hero p{
+      margin:0 0 12px;
+      color:var(--muted);
+      line-height:1.55;
     }
 
     .note{
-      margin-top:14px;
-      font-size:.9rem;
-      opacity:.6;
-    }
-
-    /* DJ PLAYER STYLE */
-    .player{
-      margin-top:30px;
-      padding:20px;
+      margin-top:10px;
+      font-size:.92rem;
+      color:var(--muted);
+      padding:10px 12px;
+      border:1px solid var(--line);
       border-radius:14px;
-      background: linear-gradient(145deg, #0e1224, #07090f);
-      border:1px solid rgba(122,162,255,0.25);
-      box-shadow: inset 0 0 25px rgba(0,0,0,.8);
+      background: rgba(255,255,255,.03);
     }
 
-    .track-title{
-      font-weight:bold;
+    /* Player */
+    .player{
+      padding:16px 18px 18px;
+      background: linear-gradient(180deg, rgba(14,16,32,.6), rgba(11,12,24,.35));
+      border-top:1px solid var(--line);
+    }
+
+    .now{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
       margin-bottom:10px;
-      letter-spacing:.5px;
-      color:#9dffcc;
+    }
+
+    .now .title{
+      font-weight:900;
+      font-size:1.08rem;
+      margin:0;
+      color: var(--neonB);
+      text-shadow: 0 0 14px rgba(157,255,204,.25);
+    }
+    .now .meta{
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:.92rem;
+    }
+
+    .controls{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-top:10px;
     }
 
     audio{
       width:100%;
       outline:none;
-      filter: drop-shadow(0 0 6px rgba(122,162,255,.4));
+      filter: drop-shadow(0 0 8px rgba(122,162,255,.22));
     }
 
-    .dj-bars{
-      margin-top:14px;
+    .btn{
+      appearance:none;
+      border:1px solid rgba(122,162,255,.35);
+      background: rgba(122,162,255,.12);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:14px;
+      cursor:pointer;
+      font-weight:700;
+    }
+    .btn:hover{ filter:brightness(1.08); }
+    .btn.secondary{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color:var(--text);
+      font-weight:700;
+    }
+
+    .eq{
       display:flex;
       gap:6px;
       justify-content:center;
+      margin-top:12px;
+      opacity:.9;
     }
-
-    .dj-bars span{
+    .eq span{
       width:6px;
-      height:24px;
-      background:#7aa2ff;
-      opacity:.6;
+      height:22px;
+      border-radius:999px;
+      background: var(--neonA);
+      box-shadow: 0 0 14px rgba(122,162,255,.25);
       animation: bounce 1.2s infinite ease-in-out;
+      opacity:.7;
     }
-
-    .dj-bars span:nth-child(2){animation-delay:.1s}
-    .dj-bars span:nth-child(3){animation-delay:.2s}
-    .dj-bars span:nth-child(4){animation-delay:.3s}
-    .dj-bars span:nth-child(5){animation-delay:.4s}
+    .eq span:nth-child(2){ animation-delay:.1s; background: var(--neonB); }
+    .eq span:nth-child(3){ animation-delay:.2s; background: var(--neonC); }
+    .eq span:nth-child(4){ animation-delay:.3s; background: var(--neonA); }
+    .eq span:nth-child(5){ animation-delay:.4s; background: var(--neonB); }
 
     @keyframes bounce{
-      0%,100%{height:10px}
-      50%{height:26px}
+      0%,100%{ height:10px; transform: translateY(0); }
+      50%{ height:26px; transform: translateY(-1px); }
     }
 
+    /* Playlist */
+    .playlist-head{
+      padding:16px 18px 12px;
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:10px;
+      border-bottom:1px solid var(--line);
+      background: rgba(255,255,255,.02);
+    }
+    .playlist-head h3{
+      margin:0;
+      font-size:1.1rem;
+    }
+    .search{
+      width: 240px;
+      max-width: 100%;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color:var(--text);
+      outline:none;
+    }
+
+    .list{
+      padding:8px;
+    }
+
+    .track{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid transparent;
+    }
+    .track:hover{
+      border-color: rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+    }
+
+    .tleft{ display:flex; gap:12px; align-items:center; }
+    .dot{
+      width:12px; height:12px; border-radius:50%;
+      background: rgba(255,255,255,.20);
+      box-shadow: 0 0 14px rgba(122,162,255,.10);
+    }
+    .tname{
+      font-weight:900;
+      margin:0;
+      font-size:1rem;
+    }
+    .tmeta{
+      margin:2px 0 0;
+      font-size:.88rem;
+      color:var(--muted);
+    }
+
+    .tactions{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+    .mini{
+      padding:9px 10px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color:var(--text);
+      cursor:pointer;
+      font-weight:800;
+    }
+    .mini:hover{ filter:brightness(1.08); }
+    a.mini{ text-decoration:none; display:inline-flex; align-items:center; }
+
+    .footer{
+      margin-top:12px;
+      padding:12px 14px;
+      color:var(--muted);
+      font-size:.9rem;
+      text-align:center;
+    }
+
+    @media (max-width: 920px){
+      .grid{ grid-template-columns:1fr; }
+      .pill{ justify-content:flex-start; }
+    }
   </style>
 </head>
 
 <body>
+  <div class="wrap">
 
-  <div class="box">
-    <h1>RoZam Studio</h1>
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">RZ</div>
+        <div>
+          <h1>RoZam Studio</h1>
+          <div class="tag">Official catalog • DJ-style preview player</div>
+        </div>
+      </div>
+      <div class="pill">
+        <span class="badge">Creator-owned</span>
+        <span class="badge">Direct licensing</span>
+        <span class="badge">Independent</span>
+      </div>
+    </header>
 
-    <p>
-      Independent music studio and digital catalog showcasing original releases.
-      Explore music, stream previews, and request direct licensing.
-    </p>
+    <div class="grid">
 
-    <div class="note">
-      All content is original and owned by RoZam Studio.<br>
-      AI tools may be used as part of the creative process.
+      <!-- LEFT: HERO + PLAYER -->
+      <section class="card">
+        <div class="hero">
+          <h2>Publish your sound. Own your catalog.</h2>
+          <p>
+            This is the official RoZam Studio catalog page. Stream previews, download tracks, and request licensing.
+          </p>
+
+          <div class="note">
+            All content is original and owned by RoZam Studio. AI tools may be used as part of the creative process.
+          </div>
+        </div>
+
+        <div class="player">
+          <div class="now">
+            <div>
+              <p class="title" id="npTitle">Select a track from the playlist</p>
+              <p class="meta" id="npMeta">—</p>
+            </div>
+            <button class="btn secondary" id="copyLinkBtn" type="button">Copy track link</button>
+          </div>
+
+          <audio id="audioPlayer" controls preload="metadata"></audio>
+
+          <div class="controls">
+            <button class="btn" id="prevBtn" type="button">Prev</button>
+            <button class="btn" id="nextBtn" type="button">Next</button>
+          </div>
+
+          <div class="eq" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: PLAYLIST -->
+      <section class="card">
+        <div class="playlist-head">
+          <div>
+            <h3>Playlist</h3>
+            <div class="tag" style="color:var(--muted); font-size:.9rem;">Click Play to load the main deck</div>
+          </div>
+          <input class="search" id="search" type="search" placeholder="Search tracks..." />
+        </div>
+        <div class="list" id="list"></div>
+      </section>
+
     </div>
 
-    <!-- DJ STYLE PLAYER -->
-    <div class="player">
-      <div class="track-title">
-        🎧 Cumbia del Apocalipsis
-      </div><div class="player">
-  <div class="track-title">
-    🎧 La Botella Me Escucha
+    <div class="footer">
+      © <span id="year"></span> RoZam Studio. Built on GitHub Pages.
+    </div>
+
   </div>
 
-  <audio controls>
-    <source src="audio/la-botella-me-escucha.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
+  <script>
+    // IMPORTANT: Make sure these filenames exist in /audio/
+    // audio/la-botella-me-escucha.mp3
+    // audio/cumbia-del-apocalipsis.wav  (optional; WAV can be heavy in browsers)
 
-  <div class="dj-bars">
-    <span></span><span></span><span></span><span></span><span></span>
-  </div>
-</div>
+    const tracks = [
+      {
+        id: "la-botella-me-escucha",
+        title: "La Botella Me Escucha",
+        artist: "RoZam Studio",
+        genre: "Banda Brava / Regional",
+        file: "audio/la-botella-me-escucha.mp3",
+        type: "audio/mpeg"
+      },
+      {
+        id: "cumbia-del-apocalipsis",
+        title: "Cumbia del Apocalipsis",
+        artist: "RoZam Studio",
+        genre: "Cumbia Sonidera",
+        file: "audio/cumbia-del-apocalipsis.wav",
+        type: "audio/wav"
+      }
+    ];
 
+    const audio = document.getElementById("audioPlayer");
+    const npTitle = document.getElementById("npTitle");
+    const npMeta = document.getElementById("npMeta");
+    const list = document.getElementById("list");
+    const search = document.getElementById("search");
+    const year = document.getElementById("year");
+    const copyLinkBtn = document.getElementById("copyLinkBtn");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
 
-      <audio controls>
-        <source src="audio/Cumbia%20del%20Apocalipsis%20(Cumbia%20sonidera%20%E2%80%93%20ca%C3%B3tica%20y%20divertida).wav" type="aud
+    year.textContent = new Date().getFullYear();
 
+    let currentIndex = -1;
+
+    function render(items){
+      list.innerHTML = items.map((t, idx) => `
+        <div class="track" data-id="${t.id}">
+          <div class="tleft">
+            <div class="dot"></div>
+            <div>
+              <p class="tname">${t.title}</p>
+              <p class="tmeta">${t.artist} • ${t.genre}</p>
+            </div>
+          </div>
+          <div class="tactions">
+            <button class="mini" data-play="${t.id}">Play</button>
+            <a class="mini" href="#${t.id}">Link</a>
+            <a class="mini" href="${t.file}" download>Download</a>
+          </div>
+        </div>
+      `).join("");
+
+      list.querySelectorAll("[data-play]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-play");
+          const idx = tracks.findIndex(x => x.id === id);
+          if (idx >= 0) load(idx, true);
+        });
+      });
+    }
+
+    function load(idx, autoplay=false){
+      const t = tracks[idx];
+      if (!t) return;
+
+      currentIndex = idx;
+
+      npTitle.textContent = t.title;
+      npMeta.textContent = `${t.artist} • ${t.genre}`;
+
+      // Set source
+      audio.innerHTML = "";
+      const s = document.createElement("source");
+      s.src = t.file;
+      s.type = t.type;
+      audio.appendChild(s);
+
+      audio.load();
+      if (autoplay) audio.play().catch(()=>{});
+
+      history.replaceState(null, "", `#${t.id}`);
+    }
+
+    function apply(){
+      const q = (search.value || "").trim().toLowerCase();
+      const filtered = tracks.filter(t => {
+        const hay = `${t.title} ${t.artist} ${t.genre}`.toLowerCase();
+        return !q || hay.includes(q);
+      });
+      render(filtered);
+    }
+
+    prevBtn.addEventListener("click", () => {
+      if (tracks.length === 0) return;
+      const next = (currentIndex <= 0) ? tracks.length - 1 : currentIndex - 1;
+      load(next, true);
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (tracks.length === 0) return;
+      const next = (currentIndex >= tracks.length - 1) ? 0 : currentIndex + 1;
+      load(next, true);
+    });
+
+    copyLinkBtn.addEventListener("click", async () => {
+      const hash = location.hash || "";
+      const url = `${location.origin}${location.pathname}${hash}`;
+      try{
+        await navigator.clipboard.writeText(url);
+        copyLinkBtn.textContent = "Copied";
+        setTimeout(()=>copyLinkBtn.textContent="Copy track link", 1200);
+      }catch{
+        alert(url);
+      }
+    });
+
+    search.addEventListener("input", apply);
+
+    // initial render
+    apply();
+
+    // if URL has a hash, try loading that track
+    const initialId = (location.hash || "").replace("#","");
+    const initialIndex = tracks.findIndex(t => t.id === initialId);
+    if (initialIndex >= 0) load(initialIndex, false);
+  </script>
+</body>
+</html>
